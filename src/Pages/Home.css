@@ -1,0 +1,23 @@
+.homeImagesHolder {
+  /* position: absolute; */
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  display: flex;
+}
+.logo {
+  top: 22%;
+  transform: scale(0.9);
+  transform: rotate(-30deg);
+  position: absolute;
+}
+
+.kodimon {
+  top: 25%;
+  transform: scale(0.7);
+  position: absolute;
+}
+.button-container {
+  top: 70%;
+  position: absolute;
+}
