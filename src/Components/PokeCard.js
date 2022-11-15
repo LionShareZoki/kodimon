@@ -8,9 +8,9 @@ const PokeCard = (props) => {
       <div className="poke">
         <div className="health">{props.health}%</div>
         <div className="row"></div>
-        <div className="name">Pikachu</div>
+        <div className="name">{props.name}</div>
         <div className="photo">
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg" />
+          <img className="photo1" src={props.image} />
         </div>
         <div className="status">
           <div className="status-text">Status</div>
