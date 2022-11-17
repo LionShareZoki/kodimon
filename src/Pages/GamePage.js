@@ -17,6 +17,8 @@ const GamePage = (props) => {
   const [clicked, setClicked] = useState([]);
   const [attacking, setAttacking] = useState([]);
 
+  ////// Ovdje je taj problem
+
   // useEffect(() => {
   //   if (pokemon?.stats[5]?.base_stat > pokemon1?.stats[5]?.base_stat) {
   //     setAttacking(pokemon);
@@ -36,10 +38,6 @@ const GamePage = (props) => {
   useEffect(() => {
     setNum(randomNumberInRange());
   }, [clicked]);
-  // console.log(num);
-
-  // let poke1 = `https://pokeapi.co/api/v2/pokemon/3`;
-  // let poke2 = "https://pokeapi.co/api/v2/pokemon/596";
 
   const fetchData = () => {
     let poke1 = `https://pokeapi.co/api/v2/pokemon/${num}`;
