@@ -6,7 +6,7 @@ const PokeCard = (props) => {
   return (
     <div className="poke-holder">
       <div className="poke">
-        <div className="health">{props.health}%</div>
+        <div className="health">100%</div>
         <div className="row"></div>
         <div className="name">{props.name}</div>
         <div className="photo">

@@ -134,6 +134,12 @@
   transition: 0.3s;
   transform: rotate(180deg);
 }
+.capitalize {
+  margin-left: 7px;
+}
+.capitalize::first-letter {
+  text-transform: capitalize;
+}
 /* .poke-holder {
   display: flex;
   flex-wrap: wrap;
