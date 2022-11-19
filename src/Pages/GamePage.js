@@ -8,7 +8,6 @@ import Button from "../Components/Button";
 import PokemonList from "../Components/PokemonList";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useRouteLoaderData } from "react-router-dom";
 
 const GamePage = (props) => {
   const [pokemon, setPokemon] = useState([]);
@@ -17,47 +16,32 @@ const GamePage = (props) => {
   const [num1, setNum1] = useState([]);
   const [clicked, setClicked] = useState([]);
   const [attacking, setAttacking] = useState([]);
-
-  ////// Ovdje je taj problem
+  const [attackClick, setAttackClick] = useState([1]);
+  const [attackDamage, setAttackDamage] = useState([]);
+  const [attackDamage1, setAttackDamage1] = useState([]);
+  const [health, setHealth] = useState([100]);
+  const [health1, setHealth1] = useState([100]);
+  const [miss, setMiss] = useState(["noMiss"]);
+  const [text, setText] = useState(["The better should win!"]);
 
   const clickHandler = () => {
     setClicked((current) => !current);
   };
-  const attackHandler = () => {
-    setAttacking((current) => !current);
-    const pushText = () => {};
-    console.log(attacking);
-  };
-  // console.log(clicked);
-  function randomNumberInRange() {
-    return Math.floor(Math.random() * (600 - 1 + 1)) + 1;
+
+  function randomNumberInRange(min, max) {
+    const number = (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(
+      0
+    );
+    console.log(number);
+    return number;
   }
 
   useEffect(() => {
-    setNum(randomNumberInRange());
+    setNum(randomNumberInRange(1, 600));
   }, [clicked]);
   useEffect(() => {
-    setNum1(randomNumberInRange());
+    setNum1(randomNumberInRange(1, 600));
   }, [clicked]);
-
-  // const fetchData = () => {
-  //   let poke1 = `https://pokeapi.co/api/v2/pokemon/${num}`;
-  //   let poke2 = "https://pokeapi.co/api/v2/pokemon/5";
-
-  //   const getPokmon1 = axios.get(poke1);
-  //   const getPokmon2 = axios.get(poke2);
-  //   axios.all([getPokmon1, getPokmon2]).then(
-  //     axios.spread((...allData) => {
-  //       const allDataPokemon1 = allData[0].data;
-  //       const allDataPokemon2 = allData[1].data;
-  //       setPokemon(allDataPokemon1);
-  //       setPokemon1(allDataPokemon2);
-  //     })
-  //   );
-  //   // .catch((err) => {
-  //   //   console.error(err);
-  //   // });
-  // };
 
   const getFirstPokemon = async () => {
     const response = await axios(
@@ -115,10 +99,46 @@ const GamePage = (props) => {
   useEffect(
     () => {
       speedCheck();
+      setAttackDamage(((pokemon.attack / 2) * (100 - pokemon1.defense)) / 100);
+      setAttackDamage1(((pokemon1.attack / 2) * (100 - pokemon.defense)) / 100);
+      setHealth(pokemon.hp);
+      setHealth1(pokemon1.hp);
     },
     [pokemon.speed],
     []
   );
+  const attackHandler = () => {
+    setAttacking((current) => !current);
+    setAttackClick((current) => !current);
+    logs();
+    // console.log(attacking);
+  };
+
+  const attack = () => {
+    attacking
+      ? setHealth1(health1 - attackDamage)
+      : setHealth(health - attackDamage1);
+  };
+
+  const logs = () => {
+    attacking
+      ? setText((current) => [
+          ...current,
+          `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage} dmg.`,
+        ])
+      : setText((current) => [
+          ...current,
+          `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage1} dmg.`,
+        ]);
+
+    console.log(text);
+  };
+
+  useEffect(() => {
+    randomNumberInRange(1, 5) != 5
+      ? attack() && setMiss("noMiss")
+      : setMiss("miss");
+  }, [attackClick]);
 
   return (
     <div className="wrapper">
@@ -131,24 +151,22 @@ const GamePage = (props) => {
           <div className="poke-left">
             {" "}
             <PokeCard
-              // name={pokemon.name}
-              // image={pokemon.image}
-              // hp={pokemon.hp}
-              // // attack={pokemon.attack}
-              // // defense={pokemon.defense}
-              // // speed={pokemon.speed}
               {...pokemon}
+              health={
+                ((health / pokemon.hp) * 100).toFixed(1) < 0
+                  ? 0
+                  : ((health / pokemon.hp) * 100).toFixed(1)
+              }
             />
           </div>
           <div className="poke-right">
             <PokeCard
-              // name={pokemon1.name}
-              // image={pokemon1.image}
-              // hp={pokemon1.hp}
-              // attack={pokemon1.attack}
-              // defense={pokemon1.defense}
-              // speed={pokemon1.speed}
               {...pokemon1}
+              health={
+                ((health1 / pokemon1.hp) * 100).toFixed(1) < 0
+                  ? 0
+                  : ((health1 / pokemon1.hp) * 100).toFixed(1)
+              }
             />
           </div>
         </div>
@@ -165,10 +183,15 @@ const GamePage = (props) => {
         </div>
         <div className="logs-rectangle">
           <h1 className="menu">Logs</h1>
-          <text className="capitalize">
-            {"  "}
-            {!attacking ? pokemon.name : pokemon1.name} Is on the attack
-          </text>
+          <p className="capitalize">
+            {text.map((name) => {
+              return (
+                <div>
+                  <li>{name}</li>
+                </div>
+              );
+            })}
+          </p>
         </div>
         <div className="attack">
           <img className={attacking ? "arrow1" : "arrow"} src={arrow} />
