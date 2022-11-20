@@ -5,9 +5,13 @@ import arrow from "../images/arrow.svg";
 import "./GamePage.css";
 import PokeCard from "../Components/PokeCard";
 import Button from "../Components/Button";
-import PokemonList from "../Components/PokemonList";
 import { useEffect, useState } from "react";
 import axios from "axios";
+// import { MDCLinearProgress } from "@material/linear-progress";
+import PropTypes from "prop-types";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const GamePage = (props) => {
   const [pokemon, setPokemon] = useState([]);
@@ -120,25 +124,38 @@ const GamePage = (props) => {
       : setHealth(health - attackDamage1);
   };
 
-  const logs = () => {
-    attacking
-      ? setText((current) => [
-          ...current,
-          `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage} dmg.`,
-        ])
-      : setText((current) => [
-          ...current,
-          `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage1} dmg.`,
-        ]);
+  useEffect(() => {
+    randomNumberInRange(1, 5) != 5 ? napad() : setMiss("miss");
+  }, [attackClick]);
 
-    console.log(text);
+  const napad = () => {
+    attack();
+    setMiss("noMiss");
   };
 
-  useEffect(() => {
-    randomNumberInRange(1, 5) != 5
-      ? attack() && setMiss("noMiss")
-      : setMiss("miss");
-  }, [attackClick]);
+  const logs = () => {
+    // attacking && miss == "noMiss"
+    "noMiss" == miss && attacking
+      ? setText((current) => [
+          ...current,
+          `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage} dmg.`,
+        ])
+      : //!attacking && miss == "noMiss";
+      "noMiss" == miss && !attacking
+      ? setText((current) => [
+          ...current,
+          `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage1} dmg.`,
+        ])
+      : //attacking && miss == "miss"
+      "miss" == miss && attacking
+      ? setText((current) => [...current, `${pokemon1.name} missed.`])
+      : //!attacking && miss == "noMiss";
+      "noMiss" == miss && !attacking
+      ? setText((current) => [...current, `${pokemon.name} missed.`])
+      : console.log("Good morning");
+
+    console.log(attacking, miss, text);
+  };
 
   return (
     <div className="wrapper">
@@ -184,10 +201,10 @@ const GamePage = (props) => {
         <div className="logs-rectangle">
           <h1 className="menu">Logs</h1>
           <p className="capitalize">
-            {text.map((name) => {
+            {text.map((name, index) => {
               return (
                 <div>
-                  <li>{name}</li>
+                  <li key={index}>{name}</li>
                 </div>
               );
             })}
