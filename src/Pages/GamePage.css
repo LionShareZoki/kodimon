@@ -142,6 +142,7 @@
   bottom: 7px;
   white-space: inherit;
   font-size: small;
+  overflow-y: scroll;
 }
 .capitalize::first-letter {
   text-transform: capitalize;

@@ -36,12 +36,13 @@ const GamePage = (props) => {
     const number = (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(
       0
     );
-    console.log(number);
+
     return number;
   }
 
   useEffect(() => {
     setNum(randomNumberInRange(1, 600));
+    setText((text) => (text = []));
   }, [clicked]);
   useEffect(() => {
     setNum1(randomNumberInRange(1, 600));
@@ -114,8 +115,7 @@ const GamePage = (props) => {
   const attackHandler = () => {
     setAttacking((current) => !current);
     setAttackClick((current) => !current);
-    logs();
-    // console.log(attacking);
+    console.log(miss);
   };
 
   const attack = () => {
@@ -125,36 +125,48 @@ const GamePage = (props) => {
   };
 
   useEffect(() => {
-    randomNumberInRange(1, 5) != 5 ? napad() : setMiss("miss");
+    randomNumberInRange(1, 5) == 5 ? promasaj() : napad();
   }, [attackClick]);
 
   const napad = () => {
+    // Ovdje dodati provjeru za kraj igre
+
     attack();
-    setMiss("noMiss");
+    logs(1);
+  };
+  const promasaj = () => {
+    logs(0);
   };
 
-  const logs = () => {
+  const logs = (x) => {
     // attacking && miss == "noMiss"
-    "noMiss" == miss && attacking
+    x && attacking
       ? setText((current) => [
           ...current,
-          `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage} dmg.`,
+          `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage} dmg.`,
         ])
       : //!attacking && miss == "noMiss";
-      "noMiss" == miss && !attacking
+      x && !attacking
       ? setText((current) => [
           ...current,
-          `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage1} dmg.`,
+          `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage1} dmg.`,
         ])
       : //attacking && miss == "miss"
-      "miss" == miss && attacking
+      x && attacking
       ? setText((current) => [...current, `${pokemon1.name} missed.`])
       : //!attacking && miss == "noMiss";
-      "noMiss" == miss && !attacking
-      ? setText((current) => [...current, `${pokemon.name} missed.`])
-      : console.log("Good morning");
 
-    console.log(attacking, miss, text);
+        setText((current) => [...current, `${pokemon.name} missed.`]);
+  };
+  const showHealth = () => {
+    return ((health / pokemon.hp) * 100).toFixed(1) < 0
+      ? 0
+      : ((health / pokemon.hp) * 100).toFixed(1);
+  };
+  const showHealth1 = () => {
+    return ((health1 / pokemon1.hp) * 100).toFixed(1) < 0
+      ? 0
+      : ((health1 / pokemon1.hp) * 100).toFixed(1);
   };
 
   return (
@@ -167,24 +179,10 @@ const GamePage = (props) => {
         <div className="poke-holder">
           <div className="poke-left">
             {" "}
-            <PokeCard
-              {...pokemon}
-              health={
-                ((health / pokemon.hp) * 100).toFixed(1) < 0
-                  ? 0
-                  : ((health / pokemon.hp) * 100).toFixed(1)
-              }
-            />
+            <PokeCard {...pokemon} health={showHealth()} />
           </div>
           <div className="poke-right">
-            <PokeCard
-              {...pokemon1}
-              health={
-                ((health1 / pokemon1.hp) * 100).toFixed(1) < 0
-                  ? 0
-                  : ((health1 / pokemon1.hp) * 100).toFixed(1)
-              }
-            />
+            <PokeCard {...pokemon1} health={showHealth1()} />
           </div>
         </div>
 
