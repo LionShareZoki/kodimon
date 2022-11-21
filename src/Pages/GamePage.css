@@ -22,7 +22,7 @@
 }
 .logo1 {
   z-index: 1;
-  right: 2%;
+  right: 5%;
   top: -10%;
   transform: scale(0.2) rotate(-30deg);
 
@@ -30,7 +30,7 @@
 }
 .kodimon1 {
   z-index: 1;
-  right: -23%;
+  right: -20%;
   top: -17%;
   transform: scale(0.2);
   position: absolute;
