@@ -25,11 +25,12 @@ const GamePage = (props) => {
   const [attackDamage1, setAttackDamage1] = useState([]);
   const [health, setHealth] = useState([100]);
   const [health1, setHealth1] = useState([100]);
-  const [miss, setMiss] = useState(["noMiss"]);
   const [text, setText] = useState(["The better should win!"]);
-
+  const [end, setEnd] = useState();
+  const [winner, setWinner] = useState();
   const clickHandler = () => {
     setClicked((current) => !current);
+    setEnd((end) => (end = 0));
   };
 
   function randomNumberInRange(min, max) {
@@ -63,7 +64,7 @@ const GamePage = (props) => {
           response.data.stats[1].base_stat,
         defense:
           response.data.stats?.[2].base_stat &&
-          response.data.stats[2].base_stat,
+          response.data.stats?.[2].base_stat,
         speed:
           response.data.stats?.[5].base_stat &&
           response.data.stats[5].base_stat,
@@ -85,7 +86,7 @@ const GamePage = (props) => {
           response.data.stats[1].base_stat,
         defense:
           response.data.stats?.[2].base_stat &&
-          response.data.stats[2].base_stat,
+          response.data.stats?.[2].base_stat,
         speed:
           response.data.stats?.[5].base_stat &&
           response.data.stats[5].base_stat,
@@ -104,8 +105,16 @@ const GamePage = (props) => {
   useEffect(
     () => {
       speedCheck();
-      setAttackDamage(((pokemon.attack / 2) * (100 - pokemon1.defense)) / 100);
-      setAttackDamage1(((pokemon1.attack / 2) * (100 - pokemon.defense)) / 100);
+      setAttackDamage(
+        pokemon1.defense <= 90
+          ? ((pokemon.attack / 2) * (100 - pokemon1.defense)) / 100
+          : ((pokemon.attack / 2) * (100 - 90)) / 100
+      );
+      setAttackDamage1(
+        pokemon.defense <= 90
+          ? ((pokemon1.attack / 2) * (100 - pokemon.defense)) / 100
+          : ((pokemon1.attack / 2) * (100 - 90)) / 100
+      );
       setHealth(pokemon.hp);
       setHealth1(pokemon1.hp);
     },
@@ -115,7 +124,6 @@ const GamePage = (props) => {
   const attackHandler = () => {
     setAttacking((current) => !current);
     setAttackClick((current) => !current);
-    console.log(miss);
   };
 
   const attack = () => {
@@ -129,35 +137,34 @@ const GamePage = (props) => {
   }, [attackClick]);
 
   const napad = () => {
-    // Ovdje dodati provjeru za kraj igre
-
-    attack();
+    setEnd(
+      (end) => (end = attackDamage > health1 || attackDamage1 > health ? 1 : 0)
+    );
     logs(1);
+    setWinner((winner) => (winner = attacking ? pokemon.name : pokemon1.name));
+    setText((text) => (text = !end ? [...text] : [...text, `${winner} won.`]));
+    attack();
   };
   const promasaj = () => {
     logs(0);
   };
 
   const logs = (x) => {
-    // attacking && miss == "noMiss"
     x && attacking
       ? setText((current) => [
           ...current,
           `${pokemon.name} attacked ${pokemon1.name} for ${attackDamage} dmg.`,
         ])
-      : //!attacking && miss == "noMiss";
-      x && !attacking
+      : x && !attacking
       ? setText((current) => [
           ...current,
           `${pokemon1.name} attacked ${pokemon.name} for ${attackDamage1} dmg.`,
         ])
-      : //attacking && miss == "miss"
-      x && attacking
+      : x && attacking
       ? setText((current) => [...current, `${pokemon1.name} missed.`])
-      : //!attacking && miss == "noMiss";
-
-        setText((current) => [...current, `${pokemon.name} missed.`]);
+      : setText((current) => [...current, `${pokemon.name} missed.`]);
   };
+
   const showHealth = () => {
     return ((health / pokemon.hp) * 100).toFixed(1) < 0
       ? 0
@@ -176,7 +183,7 @@ const GamePage = (props) => {
           <img className="logo1" src={logo} />
           <img className="kodimon1" src={kodimon} />
         </div>
-        <div className="poke-holder">
+        <div className={end ? "poke-holder1" : "poke-holder"}>
           <div className="poke-left">
             {" "}
             <PokeCard {...pokemon} health={showHealth()} />
@@ -185,8 +192,8 @@ const GamePage = (props) => {
             <PokeCard {...pokemon1} health={showHealth1()} />
           </div>
         </div>
-
-        <div className="menu-rectangle">
+        <h1 className={end ? "winner1" : "winner"}>{winner} won!</h1>
+        <div className={end ? "menu-rectangle1" : "menu-rectangle"}>
           <h2 className="menu">Menu</h2>
           <Button className={"button-menu"} to="/">
             Home
@@ -196,7 +203,7 @@ const GamePage = (props) => {
           </Button>
           <Button className={"button-menu"}>New opponent</Button>
         </div>
-        <div className="logs-rectangle">
+        <div className={end ? "logs-rectangle1" : "logs-rectangle"}>
           <h1 className="menu">Logs</h1>
           <p className="capitalize">
             {text.map((name, index) => {
@@ -208,7 +215,7 @@ const GamePage = (props) => {
             })}
           </p>
         </div>
-        <div className="attack">
+        <div className={end ? "attack1" : "attack"}>
           <img className={attacking ? "arrow1" : "arrow"} src={arrow} />
           <Button onClick={attackHandler} className={"button-attack"}>
             Attack!

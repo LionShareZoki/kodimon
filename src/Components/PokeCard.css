@@ -6,27 +6,14 @@
   flex-direction: column;
   align-items: center;
   transform: scale(0.8);
-  /* border: 3px black; */
-  /* border-style: solid; */
-
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0;
-  margin: 0.3rem;
-  border: 1px solid #efefef;
-  border-radius: 0.2rem;
-  min-width: 160px;
-  text-align: center; */
-
-  /* box-shadow: 0 3px 15px rgba(0, 0, 0, 0.089); */
+  transition: 1s;
 }
 
 .health {
   margin-top: 10px;
   margin-bottom: 5px;
   color: #079325;
+  transition: 1s;
 }
 .row {
   width: 97%;
@@ -70,17 +57,20 @@
   font-weight: 700;
   position: relative;
   top: 10px;
+  transition: 1s;
 }
 .photo {
   transform: scale(0.7);
   position: relative;
   bottom: 10px;
+  transition: 1s;
 
   /* object-fit: cover; */
 }
 .photo1 {
   width: 250px;
   height: 220px;
+  transition: 1s;
 }
 .status {
   position: relative;
@@ -88,9 +78,11 @@
   font-weight: 700;
   margin-right: auto;
   margin-bottom: 10px;
+  transition: 1s;
 }
 .status-text {
   margin-left: 10px;
+  transition: 1s;
 }
 .rectangle {
   display: flex;
@@ -107,4 +99,5 @@
   margin-top: 5px;
   margin-bottom: 7px;
   font-size: medium;
+  transition: 1s;
 }

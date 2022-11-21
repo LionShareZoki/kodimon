@@ -6,18 +6,22 @@
   justify-content: center;
 }
 .box {
+  z-index: 0;
   align-items: center;
-  border-style: solid;
+  /* border-style: solid;  */
   width: 90%;
   height: 99%;
   position: relative;
   overflow: hidden;
   display: inline-block;
 }
+
 .logo-holder {
   display: flex;
+  z-index: 1;
 }
 .logo1 {
+  z-index: 1;
   right: 2%;
   top: -10%;
   transform: scale(0.2) rotate(-30deg);
@@ -25,15 +29,23 @@
   position: absolute;
 }
 .kodimon1 {
+  z-index: 1;
   right: -23%;
   top: -17%;
   transform: scale(0.2);
   position: absolute;
 }
-/* .poke-holder {
+.poke-holder {
   display: flex;
   flex-direction: row;
-} */
+  transition: 1s;
+}
+.poke-holder1 {
+  display: flex;
+  flex-direction: row;
+  opacity: 15%;
+  transition: 1s;
+}
 .poke-left {
   position: absolute;
   top: 40px;
@@ -56,6 +68,21 @@
   border-style: solid;
   border-radius: 10px;
   border-color: #ffcc00;
+  transition: 1s;
+}
+.menu-rectangle1 {
+  display: flex;
+  flex-direction: column;
+  margin-top: 90px;
+  margin-left: 525px;
+  display: flex;
+  width: 16%;
+  height: 210px;
+  background-color: #fff7d6;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #ffcc00;
+  transition: 1s;
 }
 .menu {
   font-weight: 700;
@@ -99,12 +126,38 @@
   border-color: #ffcc00;
   position: relative;
   bottom: 215px;
+  transition: 1s;
+}
+.logs-rectangle1 {
+  display: flex;
+  flex-direction: column;
+  margin-left: 800px;
+  width: 35%;
+  height: 210px;
+  background-color: #fff7d6;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #ffcc00;
+  position: relative;
+  top: 50px;
+  right: 400px;
+  opacity: 15%;
+  transition: 1s;
 }
 .attack {
   display: grid;
   position: relative;
   bottom: 550px;
   left: 540px;
+  transition: 1s;
+}
+.attack1 {
+  display: grid;
+  position: relative;
+  bottom: 550px;
+  left: 540px;
+  display: none;
+  transition: 1s;
 }
 .button-attack {
   padding: 6px 50px 6px;
@@ -163,4 +216,19 @@
 } */
 li {
   list-style-type: none;
+}
+.winner {
+  display: none;
+  transition: 1s;
+}
+.winner1 {
+  font-size: x-large;
+  align-self: center;
+  justify-content: center;
+  margin-left: 44%;
+  margin-top: 5%;
+  transition: 1s;
+}
+.winner1::first-letter {
+  text-transform: capitalize;
 }
