@@ -32,6 +32,14 @@ const GamePage = (props) => {
     setClicked((current) => !current);
     setEnd((end) => (end = 0));
   };
+  // const newOponentHandler = () => {
+  //   setEnd((end) => (end = 0));
+  //   winner == pokemon.name
+  //     ? getSecondPokemon()
+  //     : winner == pokemon1.name
+  //     ? getFirstPokemon()
+  //     : console.log("nothing");
+  // };
 
   function randomNumberInRange(min, max) {
     const number = (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(
@@ -126,10 +134,17 @@ const GamePage = (props) => {
     setAttackClick((current) => !current);
   };
 
+  const firstAttacking = () => {
+    setHealth1(health1 - attackDamage);
+    setEnd((end) => (end = attackDamage > health1 ? 1 : 0));
+  };
+  const secondAttacking = () => {
+    setHealth(health - attackDamage1);
+    setEnd((end) => (end = attackDamage1 > health ? 1 : 0));
+  };
+
   const attack = () => {
-    attacking
-      ? setHealth1(health1 - attackDamage)
-      : setHealth(health - attackDamage1);
+    attacking ? firstAttacking() : secondAttacking();
   };
 
   useEffect(() => {
@@ -137,15 +152,13 @@ const GamePage = (props) => {
   }, [attackClick]);
 
   const napad = () => {
-    setEnd(
-      (end) => (end = attackDamage > health1 || attackDamage1 > health ? 1 : 0)
-    );
     logs(1);
     setWinner((winner) => (winner = attacking ? pokemon.name : pokemon1.name));
     setText((text) => (text = !end ? [...text] : [...text, `${winner} won.`]));
     attack();
   };
   const promasaj = () => {
+    setEnd((end) => (end = 0));
     logs(0);
   };
 
@@ -175,7 +188,6 @@ const GamePage = (props) => {
       ? 0
       : ((health1 / pokemon1.hp) * 100).toFixed(1);
   };
-
   return (
     <div className="wrapper">
       <div className="box">
@@ -201,7 +213,9 @@ const GamePage = (props) => {
           <Button className={"button-menu"} onClick={clickHandler}>
             New game
           </Button>
-          <Button className={"button-menu"}>New opponent</Button>
+          {/* <Button className={"button-menu"} onClick={newOponentHandler}>
+            New opponent
+          </Button> */}
         </div>
         <div className={end ? "logs-rectangle1" : "logs-rectangle"}>
           <h1 className="menu">Logs</h1>
