@@ -22,5 +22,6 @@ In each turn, the Pokemon with the higher speed will attack first. There is a 20
 ## Final Thoughts
 
 Kodimon Game offers a thrilling and engaging gaming experience that is sure to keep you on the edge of your seat. Whether you're a seasoned Pokemon veteran or a newcomer to the series, you'll find plenty to love in this exciting and fast-paced game. So what are you waiting for? Start playing today and discover the champion within you!
+
 [Kodimon](https://kodimon1.netlify.app/)
 ![Project Image](https://github.com/LionShareZoki/kodimon/blob/master/src/images/kodimon-project-image.png)
